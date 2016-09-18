@@ -27,6 +27,7 @@ public class Sign_upActivity extends AppCompatActivity {
     private ImageView imageView;
     private String nameString, uesrString, passwordString, repasswordString, sexString, imageString,imagePathString
             ,ImageNameString;
+    private boolean statusABoolean = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +77,9 @@ public class Sign_upActivity extends AppCompatActivity {
                 imageView.setImageBitmap(bitmap);
             } catch (Exception e) {
                 e.printStackTrace();
-            }
+            }//try
+
+            statusABoolean = false;
         }//if
 
 
@@ -132,6 +135,11 @@ public class Sign_upActivity extends AppCompatActivity {
             myAlert.myDiglog();
 
             //check Sex
+        } else if (statusABoolean) {
+            MyAlert myAlert = new MyAlert(this, R.drawable.kon48, "ยังไม่เลือกรูปเลย", "กรุณาเลือกรูปด้วยค่ะ");
+            myAlert.myDiglog();
+        } else {
+
         }
 
 
