@@ -2,6 +2,8 @@ package com.example.maxz.myfriend;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -67,6 +69,14 @@ public class Sign_upActivity extends AppCompatActivity {
             imagePathString = myFinndPathImage(uri);
             Log.d("MyFrienfV1", "imagePathString ==>" + imagePathString);
             //result Complete
+
+            //Setup Image to ImageView
+            try {
+                Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+                imageView.setImageBitmap(bitmap);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }//if
 
 
