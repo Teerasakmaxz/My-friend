@@ -1,6 +1,8 @@
 package com.example.maxz.myfriend;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,7 +23,8 @@ public class Sign_upActivity extends AppCompatActivity {
     private RadioGroup radioGroup;
     private RadioButton maleRadioButton, femaleRadioButton;
     private ImageView imageView;
-    private String nameString, uesrString, passwordString, repasswordString, sexString, imageString;
+    private String nameString, uesrString, passwordString, repasswordString, sexString, imageString,imagePathString
+            ,ImageNameString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +62,35 @@ public class Sign_upActivity extends AppCompatActivity {
         if ((requestCode ==1)&&(resultCode ==RESULT_OK)) {
             Log.d("MyFrienfV1 ","Result ==>OK");
 
+            //หา path รูป
+            Uri uri = data.getData();
+            imagePathString = myFinndPathImage(uri);
+            Log.d("MyFrienfV1", "imagePathString ==>" + imagePathString);
             //result Complete
         }//if
 
 
     }//onActivity
+
+    private String myFinndPathImage(Uri uri) {
+
+
+        String strResult = null;
+        String[] strings = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(uri, strings, null, null, null);
+        if (cursor != null) {
+
+            cursor.moveToFirst();
+            int intIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            strResult = cursor.getString(intIndex);
+
+        } else {
+
+            strResult = uri.getPath();
+
+        }
+        return strResult;
+    }//myFinndPathImage
 
     public void ciicksignUPSign(View view) {
 
