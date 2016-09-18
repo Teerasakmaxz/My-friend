@@ -59,6 +59,12 @@ public class Sign_upActivity extends AppCompatActivity {
             myAlert.myDiglog();
 
 
+        } else if (!passwordString.equals(repasswordString)) {
+
+            MyAlert myAlert = new MyAlert(this,R.drawable.nobita48,"password ผิด","พิม password ให้เหมือนกัน");
+            myAlert.myDiglog();
+
+            //pass not macth
         }
 
 
