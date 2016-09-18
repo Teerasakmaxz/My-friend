@@ -65,6 +65,11 @@ public class Sign_upActivity extends AppCompatActivity {
             myAlert.myDiglog();
 
             //pass not macth
+        } else if (!(maleRadioButton.isChecked())||femaleRadioButton.isChecked()) {
+            MyAlert myAlert = new MyAlert(this,R.drawable.bird48,"ยังไม่เลือก Sex","กรุณาเลือกเพศ");
+            myAlert.myDiglog();
+
+            //check Sex
         }
 
 
