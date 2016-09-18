@@ -31,7 +31,7 @@ public class Sign_upActivity extends AppCompatActivity {
     private RadioButton maleRadioButton, femaleRadioButton;
     private ImageView imageView;
     private String nameString, uesrString, passwordString, repasswordString, sexString, imageString,imagePathString
-            ,ImageNameString;
+            ,imageNameString;
     private boolean statusABoolean = true;
 
     @Override
@@ -61,6 +61,22 @@ public class Sign_upActivity extends AppCompatActivity {
             }//OnClick
         });
 
+        //Radio Controller
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                switch (checkedId) {
+                    case  R.id.radioButton:
+                        sexString = "Male";
+                        break;
+                    case R.id.radioButton2:
+                        sexString = "Female";
+                        break;
+                }//switch
+
+            }//onCheck
+        });
 
     }//main method 2
 
@@ -146,10 +162,19 @@ public class Sign_upActivity extends AppCompatActivity {
         } else {
             //Upload Image to Server
             uploadImageToServer();
+            insertDataToServer();
         }
 
 
     }//clickSign Up
+
+    private void insertDataToServer() {
+
+        imageNameString = imagePathString.substring(imagePathString.lastIndexOf("/"));
+        imageNameString = "http://swiftcodingthai.com/18Sep/Image" + imageNameString;
+        Log.d("MyFrienfV1", "imageNameString ==>"+imageNameString);
+
+    }//insertDataToServer
 
     private void uploadImageToServer() {
 
