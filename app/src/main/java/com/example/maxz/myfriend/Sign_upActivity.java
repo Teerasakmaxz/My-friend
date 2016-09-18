@@ -1,10 +1,12 @@
 package com.example.maxz.myfriend;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +18,13 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.squareup.okhttp.FormEncodingBuilder;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
 
 import org.jibble.simpleftp.SimpleFTP;
 
@@ -30,8 +39,7 @@ public class Sign_upActivity extends AppCompatActivity {
     private RadioGroup radioGroup;
     private RadioButton maleRadioButton, femaleRadioButton;
     private ImageView imageView;
-    private String nameString, uesrString, passwordString, repasswordString, sexString, imageString,imagePathString
-            ,imageNameString;
+    private String nameString, uesrString, passwordString, repasswordString, sexString, imageString, imagePathString, imageNameString;
     private boolean statusABoolean = true;
 
     @Override
@@ -57,7 +65,7 @@ public class Sign_upActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/*");
-                startActivityForResult(Intent.createChooser(intent,"โปรดเลือกรูปภาพ"),1);
+                startActivityForResult(Intent.createChooser(intent, "โปรดเลือกรูปภาพ"), 1);
             }//OnClick
         });
 
@@ -67,7 +75,7 @@ public class Sign_upActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
 
                 switch (checkedId) {
-                    case  R.id.radioButton:
+                    case R.id.radioButton:
                         sexString = "Male";
                         break;
                     case R.id.radioButton2:
@@ -83,8 +91,8 @@ public class Sign_upActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if ((requestCode ==1)&&(resultCode ==RESULT_OK)) {
-            Log.d("MyFrienfV1 ","Result ==>OK");
+        if ((requestCode == 1) && (resultCode == RESULT_OK)) {
+            Log.d("MyFrienfV1 ", "Result ==>OK");
 
             //หา path รูป
             Uri uri = data.getData();
@@ -172,9 +180,72 @@ public class Sign_upActivity extends AppCompatActivity {
 
         imageNameString = imagePathString.substring(imagePathString.lastIndexOf("/"));
         imageNameString = "http://swiftcodingthai.com/18Sep/Image" + imageNameString;
-        Log.d("MyFrienfV1", "imageNameString ==>"+imageNameString);
+        Log.d("MyFrienfV1", "imageNameString ==>" + imageNameString);
+
+        Log.d("MyFrienfV2", "Name=" + nameString);
+        Log.d("MyFrienfV2", "Sex=" + sexString);
+        Log.d("MyFrienfV2", "User=" + uesrString);
+        Log.d("MyFrienfV2", "Password=" + passwordString);
+        Log.d("MyFrienfV2", "Image=" + imageNameString);
+
+        MyUpdeatUser myUpdeatUser = new MyUpdeatUser(this);
+        myUpdeatUser.execute();
 
     }//insertDataToServer
+
+    //<ความปลอดภัย,โพสเกจบา>
+    private class MyUpdeatUser extends AsyncTask<Void, Void, String> {
+
+        private Context context;
+        private static final String URL = "http://swiftcodingthai.com/18Sep/add_user_max.php";
+
+        public MyUpdeatUser(Context context) {
+            this.context = context;
+        }
+
+        @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+            Log.d("MyFrienfV2", "Result ==>" + s);
+
+            if (Boolean.parseBoolean(s)) {
+                Toast.makeText(context,"อัพข้อมูลเรียบร้อยจ้า",Toast.LENGTH_SHORT).show();
+                finish();
+
+            } else {
+                Toast.makeText(context,"มรข้อผิดพลาดไม่สามารถอัพข้อมูลได้",Toast.LENGTH_SHORT).show();
+
+            } //if
+            }//onpost
+        //พยายามต่อเน็ต
+            @Override
+        protected String doInBackground(Void... params) {
+
+                try {
+
+                    OkHttpClient okHttpClient = new OkHttpClient();
+                    //ทำให้ข้อมูลเป็นก้อน แล้วโยน
+                    RequestBody requestBody = new FormEncodingBuilder()
+                            .add("isAdd", "true")
+                            .add("Name", nameString)
+                            .add("Sex", sexString)
+                            .add("User", uesrString)
+                            .add("Password", passwordString)
+                            .add("Image", imageNameString)
+                            .build();//ตาม PHP และเงื่อนไขการPost
+
+                    Request.Builder builder = new Request.Builder();
+                    Request request = builder.url(URL).post(requestBody).build();
+                    Response response = okHttpClient.newCall(request).execute();
+                    return response.body().string();
+
+                } catch (Exception e) {
+                    return null;
+                }
+
+
+        }
+    }//MyUpdeatUser class
 
     private void uploadImageToServer() {
 
