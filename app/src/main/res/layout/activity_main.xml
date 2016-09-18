@@ -7,7 +7,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.maxz.myfriend.MainActivity">
+    tools:context="com.example.maxz.myfriend.MainActivity"
+    android:background="@drawable/wallpapers_b_05">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -20,7 +21,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/button"
             android:layout_weight="1"
-            android:text="@string/signin" />
+            android:text="@string/signin"
+            android:onClick="cickSignINMain" />
 
         <Button
             android:layout_width="wrap_content"
@@ -29,5 +31,28 @@
             android:layout_weight="1"
             android:text="@string/signup"
             android:onClick="click_signUPMain" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:background="#50000000">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText5"
+            android:textColor="#ffffff"
+            android:hint="User" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText6"
+            android:textColor="#ffffff"
+            android:hint="Password" />
     </LinearLayout>
 </RelativeLayout>
