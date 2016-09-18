@@ -1,8 +1,10 @@
 package com.example.maxz.myfriend;
 
+import android.content.Intent;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,7 +21,7 @@ public class Sign_upActivity extends AppCompatActivity {
     private RadioGroup radioGroup;
     private RadioButton maleRadioButton, femaleRadioButton;
     private ImageView imageView;
-    private String nameString,uesrString,passwordString,repasswordString, sexString,imageString;
+    private String nameString, uesrString, passwordString, repasswordString, sexString, imageString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +39,31 @@ public class Sign_upActivity extends AppCompatActivity {
         imageView = (ImageView) findViewById(R.id.imageView);
 
 
+        //imagae controller
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                startActivityForResult(Intent.createChooser(intent,"โปรดเลือกรูปภาพ"),1);
+            }//OnClick
+        });
 
 
     }//main method 2
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if ((requestCode ==1)&&(resultCode ==RESULT_OK)) {
+            Log.d("MyFrienfV1 ","Result ==>OK");
+
+            //result Complete
+        }//if
+
+
+    }//onActivity
 
     public void ciicksignUPSign(View view) {
 
@@ -53,26 +77,25 @@ public class Sign_upActivity extends AppCompatActivity {
 
         //เช็คช่องว่าง ว่ากรอกครบหรือยัง
         //check Space
-        if (nameString.equals("") ||uesrString.equals("")||passwordString.equals("")||repasswordString.equals("")) {
+        if (nameString.equals("") || uesrString.equals("") || passwordString.equals("") || repasswordString.equals("")) {
             //have Space
-            MyAlert myAlert = new MyAlert(this,R.drawable.doremon48,"มีช่องว่าง","กรุณากรอกทุกช่อง");
+            MyAlert myAlert = new MyAlert(this, R.drawable.doremon48, "มีช่องว่าง", "กรุณากรอกทุกช่อง");
             myAlert.myDiglog();
 
 
         } else if (!passwordString.equals(repasswordString)) {
 
-            MyAlert myAlert = new MyAlert(this,R.drawable.nobita48,"password ผิด","พิม password ให้เหมือนกัน");
+            MyAlert myAlert = new MyAlert(this, R.drawable.nobita48, "password ผิด", "พิม password ให้เหมือนกัน");
             myAlert.myDiglog();
 
             //pass not macth
-        } else if (!(maleRadioButton.isChecked())||femaleRadioButton.isChecked()) {
-            MyAlert myAlert = new MyAlert(this,R.drawable.bird48,"ยังไม่เลือก Sex","กรุณาเลือกเพศ");
+            //isChecked คือ ถ้ามมีการเซ็คจะเป็นจริง
+        } else if (!(maleRadioButton.isChecked()) || femaleRadioButton.isChecked()) {
+            MyAlert myAlert = new MyAlert(this, R.drawable.bird48, "ยังไม่เลือก Sex", "กรุณาเลือกเพศ");
             myAlert.myDiglog();
 
             //check Sex
         }
-
-
 
 
     }//clickSign Up
