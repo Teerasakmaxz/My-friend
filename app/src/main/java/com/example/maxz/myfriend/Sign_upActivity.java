@@ -139,11 +139,17 @@ public class Sign_upActivity extends AppCompatActivity {
             MyAlert myAlert = new MyAlert(this, R.drawable.kon48, "ยังไม่เลือกรูปเลย", "กรุณาเลือกรูปด้วยค่ะ");
             myAlert.myDiglog();
         } else {
-
+            //Upload Image to Server
+            uploadImageToServer();
         }
 
 
     }//clickSign Up
+
+    private void uploadImageToServer() {
+
+
+    }//uploadImageToServer
 
 
 }//main class 2
