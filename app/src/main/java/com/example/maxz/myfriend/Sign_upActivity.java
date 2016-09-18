@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +16,10 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import org.jibble.simpleftp.SimpleFTP;
+
+import java.io.File;
 
 public class Sign_upActivity extends AppCompatActivity {
 
@@ -148,6 +153,23 @@ public class Sign_upActivity extends AppCompatActivity {
 
     private void uploadImageToServer() {
 
+        //New Policy
+        StrictMode.ThreadPolicy threadPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(threadPolicy);
+
+        try {
+
+            SimpleFTP simpleFTP = new SimpleFTP();
+            simpleFTP.connect("ftp.swiftcodingthai.com", 21, "18Sep@swiftcodingthai.com", "Abc12345");
+            simpleFTP.bin();
+            simpleFTP.cwd("Image");
+            simpleFTP.stor(new File(imagePathString));
+            simpleFTP.disconnect();
+
+            Log.d("MyFrienfV1", "UploadImage==> OK");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }//uploadImageToServer
 
